@@ -7,7 +7,7 @@
     "build": "pnpm -r build",
     "dev": "pnpm --filter @zapizapi/api dev",
     "test": "pnpm -r --if-present test",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm build"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
