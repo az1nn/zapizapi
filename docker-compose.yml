@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: zapizapi
+      POSTGRES_USER: zapizapi
+      POSTGRES_PASSWORD: zapizapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - zapizapi-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zapizapi -d zapizapi"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  zapizapi-postgres:
