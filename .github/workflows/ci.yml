@@ -9,6 +9,23 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: zapizapi
+          POSTGRES_PASSWORD: zapizapi
+          POSTGRES_DB: zapizapi
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U zapizapi -d zapizapi"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://zapizapi:zapizapi@localhost:5432/zapizapi
+      NODE_ENV: test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,6 +43,9 @@ jobs:
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Push test schema
+        run: pnpm --filter @zapizapi/persistence db:push
 
       - name: Test
         run: pnpm test
